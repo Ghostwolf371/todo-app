@@ -65,13 +65,11 @@ const TodoCard = ({
       )}
 
       <div className="todo-buttons">
-        {!showInput && (
-          <button onClick={handleStartEditing} disabled={complete}>
-            Edit
-          </button>
+        {!showInput && !complete && (
+          <button onClick={handleStartEditing}>Edit</button>
         )}
         <button onClick={handleComplete} disabled={complete}>
-          Done
+          {complete ? "Completed" : "Done"}
         </button>
         <button onClick={handleDelete}>Delete</button>
       </div>
