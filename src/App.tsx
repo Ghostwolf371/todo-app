@@ -51,6 +51,19 @@ const App = () => {
     localStorage.setItem("todo-app", JSON.stringify({ todos: currTodos }));
   };
 
+  const handleEditTodo = (index: number, newTodo: string) => {
+    // Create a new array by mapping over the todos and modifying the one at the specified index
+    const newTodoList = todos.map((todo, i) =>
+      i === index ? { ...todo, input: newTodo } : todo
+    );
+
+    // Update the state with the new todo list
+    setTodos(newTodoList);
+
+    // Save the updated todo list to localStorage
+    handleSaveData(newTodoList);
+  };
+
   useEffect(() => {
     if (!localStorage || !localStorage.getItem("todo-app")) return;
     const storedTodos = localStorage.getItem("todo-app");
@@ -73,6 +86,7 @@ const App = () => {
         handleCompleteTodo={handleCompleteTodo}
         todos={todos}
         selectedTab={selectedTab}
+        handleEditTodo={handleEditTodo}
       />
       <TodoInput handleAddTodo={handleAddTodo} />
     </>

@@ -6,6 +6,7 @@ interface TodoListProps {
   selectedTab: string;
   handleDeleteTodo: (index: number) => void;
   handleCompleteTodo: (index: number) => void;
+  handleEditTodo: (index: number, newTodo: string) => void;
 }
 
 const TodoList = ({
@@ -13,6 +14,7 @@ const TodoList = ({
   selectedTab,
   handleDeleteTodo,
   handleCompleteTodo,
+  handleEditTodo,
 }: TodoListProps) => {
   const tab = selectedTab;
   const filterTodosList =
@@ -31,6 +33,7 @@ const TodoList = ({
           index={todos.findIndex((val) => val.input == todo.input)}
           handleDeleteTodo={handleDeleteTodo}
           handleCompleteTodo={handleCompleteTodo}
+          handleEditTodo={handleEditTodo}
         />
       ))}
     </>
