@@ -28,7 +28,6 @@ const TodoCard = ({
   }, [showInput]);
 
   const handleStartEditing = () => {
-    console.log("object");
     setShowInput(true);
     setInputValue(input);
   };
