@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 interface TodoCardProps {
   complete: boolean;
@@ -17,50 +17,66 @@ const TodoCard = ({
   handleEditTodo,
   index,
 }: TodoCardProps) => {
-  const [editingIndex, setEditingIndex] = useState<number | null>(null);
-  const [editedTodo, setEditedTodo] = useState<string>("");
+  const [showInput, setShowInput] = useState(false);
+  const [inputValue, setInputValue] = useState("");
 
-  const handleStartEditing = (index: number, currentTodo: string) => {
-    setEditingIndex(index);
-    setEditedTodo(currentTodo);
+  // Effect to reset input value when editing is canceled or saved
+  useEffect(() => {
+    if (!showInput) {
+      setInputValue("");
+    }
+  }, [showInput]);
+
+  const handleStartEditing = () => {
+    console.log("object");
+    setShowInput(true);
+    setInputValue(input);
   };
 
   const handleSaveEdit = () => {
-    if (editingIndex !== null) {
-      handleEditTodo(editingIndex, editedTodo);
-      setEditingIndex(null);
-      setEditedTodo("");
+    if (inputValue.trim()) {
+      handleEditTodo(index, inputValue);
+      setShowInput(false);
     }
+  };
+
+  const handleComplete = () => {
+    handleCompleteTodo(index);
+  };
+
+  const handleDelete = () => {
+    handleDeleteTodo(index);
   };
 
   return (
     <div className="card todo-item">
-      <p>{input}</p>
+      {showInput ? (
+        <>
+          <input
+            type="text"
+            value={inputValue}
+            onChange={(e) => setInputValue(e.target.value)}
+            placeholder="Edit your todo"
+          />
+          <button onClick={handleSaveEdit}>Save</button>
+        </>
+      ) : (
+        <p>{input}</p>
+      )}
+
       <div className="todo-buttons">
-        {editingIndex === index ? (
-          <>
-            <input
-              type="text"
-              value={editedTodo}
-              onChange={(e) => setEditedTodo(e.target.value)}
-            />
-            <button onClick={handleSaveEdit}>Save</button>
-          </>
-        ) : (
-          <div>
-            <button onClick={() => handleStartEditing(index, input)}>
-              Edit
-            </button>
-          </div>
+        {!showInput && (
+          <button onClick={handleStartEditing} disabled={complete}>
+            Edit
+          </button>
         )}
-        <button disabled={complete} onClick={() => handleCompleteTodo(index)}>
-          <h6>Done</h6>
+        <button onClick={handleComplete} disabled={complete}>
+          Done
         </button>
-        <button onClick={() => handleDeleteTodo(index)}>
-          <h6>Delete</h6>
-        </button>
+        <button onClick={handleDelete}>Delete</button>
       </div>
     </div>
   );
 };
+
 export default TodoCard;
